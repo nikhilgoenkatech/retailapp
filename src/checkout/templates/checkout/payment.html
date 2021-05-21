@@ -8,7 +8,7 @@
 
 {% block content %}
     <div class="container my-4">
-        <h2 class="text-center my-4">Payment</h2>
+        <h2 class="text-center my-4" style="color:white">Payment</h2>
 
         <form action="{% url 'checkout:payment' %}" method="post" id="payment-form" class="p-5 bg-light">
             {% csrf_token %}

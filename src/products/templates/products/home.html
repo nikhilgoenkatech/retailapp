@@ -2,7 +2,7 @@
 {% block content %}
     <main role="main" class="container">
         <div class="my-3 py-3 text-center">
-            <h2 class="display-4">PRODUCTS</h2>
+            <h2 style="color:#069">PRODUCTS</h2>
         </div>
         {% include "products/messages.html" %}
         <section class="row">
@@ -23,7 +23,7 @@
             </div>
             {% endfor %}
         </section>
-        <nav aria-label="Product navigation">
+        <nav aria-label="Product navigation" align="center">
             <ul class="pagination justify-content-center">
                 {% if page_obj.has_previous  %}
                     <li class="page-item">

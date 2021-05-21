@@ -1,4 +1,5 @@
-const stripe = Stripe('pk_test_nsMIlwD12pLCBxRkbYaSF0Jb00rK7NLJ19');
+const stripe = Stripe("sk_test_4eC39HqLyjWDarjtT1zdp7d");
+const STRIPE_PUBLISHABLE_KEY="pk_test_TYooMQauvdEDq54NiTphI7jx"
 const elements = stripe.elements();
 
 // Custom styling can be passed to options when creating an Element.

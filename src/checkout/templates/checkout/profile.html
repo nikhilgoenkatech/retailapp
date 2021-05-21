@@ -1,11 +1,11 @@
 {% extends "products/base.html" %}
 {% block content %}
-    <div class="container my-4">
+    <div class="container my-4" style="color:white">
         {% include "products/messages.html" %}
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Shipping Address</legend>
+                <legend class="border-bottom mb-4" style="color:white">Shipping Address</legend>
                 {% include "checkout/shipping_address_form.html" %}
             </fieldset>
             <div class="form-group">

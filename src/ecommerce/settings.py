@@ -25,7 +25,7 @@ SECRET_KEY = 'w3cl&bre@%3cu1l)#(zms7@uki2j*y06&ddpwtc+8n186sr%v*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -49,7 +49,8 @@ INSTALLED_APPS = [
 
     'products',
     'carts',
-    'checkout'
+    'checkout',
+    'autodynatrace.wrappers.django'
 ]
 
 MIDDLEWARE = [
@@ -135,9 +136,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'products/static/')]
+STATIC_ROOT=os.path.join(BASE_DIR, 'products/static')
 
 MEDIA_URL = '/media/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 SITE_ID = 1
@@ -151,8 +156,10 @@ env.read_env(os.path.join(os.path.dirname(BASE_DIR), '.env'))
 STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = "smtp.mailtrap.io"
-EMAIL_PORT = 587
+EMAIL_HOST = "smtp.googlemail.com"
+EMAIL_PORT = 465 
 MAIL_USE_TLS = True
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+
+ACCOUNT_EMAIL_VERIFICATION  = "none"

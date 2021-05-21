@@ -1,44 +1,63 @@
-{% load cart_icon %}
-<nav class="navbar sticky-top navbar-expand-md navbar-light bg-light">
+<head>
+    {% load cart_icon %}
+    {% block extra_head %} {% endblock %}
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{%static "images/Dynatrace-favicon.ico"%}"/>
+    <link rel="shortcut icon" type="image/png" href="{%static "images/e-commerce.jpg"%}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"/>
+</head>
+<body>
+    <nav class="navbar sticky-top navbar-expand-md navbar-light bg-dark" style="background: url('e-commerce.jpg')"> 
     <div class="container">
-        <a class="navbar-brand h1 text-primary" href="{% url 'products:home-page' %}">Django ecommerce website</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarToggler">
-            <ul class="navbar-nav mr-auto">
+
+        <a class="navbar-nav mr-auto" href="{% url 'products:home-page' %}"></a>
+
+         <div class="collapse navbar-collapse" id="topNavBar">
+            <ul class="navbar-nav navbar-right">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'products:home-page' %}">Home</a>
+                    <a class="nav-link" style="color:white" href="{% url 'products:home-page' %}">
+                      <span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a>
                 </li>
             </ul>
-            <ul class="navbar-nav">
+            <ul class="navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                        <a class="nav-link" style="color:white" href="{% url 'profile' %}">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>Profile</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'show-orders' %}">Orders</a>
+                    <li>
+                        <a class="nav-link" style="color:white" href="{% url 'show-orders' %}">
+                        <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>Orders</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'refund' %}">Request Refund</a>
+                    <li>
+                        <a class="nav-link" style="color:white" href="{% url 'refund' %}">
+                        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>Request Refund</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
+                    <li>
+                        <a class="nav-link" style="color:white" href="{% url 'account_logout' %}">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>Logout</a>
                     </li>
                 {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_login' %}">Login</a>
+                    <li>
+                        <a class="nav-link" style="color:white" href="{% url 'account_login' %}">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>Login</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
+                    <li>
+                        <a class="nav-link"style="color:white"  href="{% url 'account_signup' %}">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>Sign Up</a>
                     </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'carts:show-cart' %}">Cart<i class="fas fa-shopping-cart ml-2"></i>
+                <li>
+                    <a class="nav-link" style="color:white" href="{% url 'carts:show-cart' %}">Cart<i class="fas fa-shopping-cart ml-2"></i>
                         <span id="cart-total-items" class="badge badge-info">{{ user| total_cart_items }}</span>
                     </a>
                 </li>
             </ul>
         </div>
-    </div>
-</nav>
+        </div>
+  </nav>
+</body>

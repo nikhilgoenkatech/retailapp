@@ -1,9 +1,9 @@
 {% extends "products/base.html" %}
 {% block content %}
-    <div class="container my-4">
+    <div class="container my-4" style="color:white">
         <h2 class="text-center my-4">Your Orders</h2>
         {% include "products/messages.html" %}
-        <table class="table">
+        <table class="table" style="color:white">
             {% if orders %}
                 <thead>
                     <tr>
@@ -51,7 +51,7 @@
                         </tr>
                     {% endif %}
                     <tr class="table-success">
-                        <td colspan="3" class="text-right text-success"><h5>Total: <span class="font-weight-bold">{{ order.get_total_amount|floatformat:2 }} $</span></h5></td>
+                        <td colspan="3" class="text-right text-success"><h5 style="color:blue">Total: <span class="font-weight-bold">{{ order.get_total_amount|floatformat:2 }} $</span></h5></td>
                     </tr>
                     {% empty %}
                         <div class="alert alert-info" role="alert">

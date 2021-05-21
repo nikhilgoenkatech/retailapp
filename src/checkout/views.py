@@ -65,27 +65,30 @@ class PaymentView(LoginRequiredMixin, View):
     def post(self, *args, **kwargs):
         order = Order.objects.filter(user=self.request.user, ordered=False).first()
         token = self.request.POST.get('stripeToken')
-        try:
-            charge = stripe.Charge.create(
-              amount=round(float(order.get_total_amount() * 100)),
-              currency="usd",
-              source=token
-            )
-        except stripe.error.CardError:
-            messages.error(self.request, 'Payment could not be made')
-            return redirect('products:home-page')
-        except Exception:
-            messages.error(self.request, 'Internal server error')
-            return redirect('products:home-page')
 
-        payment = Payment(
-            user=self.request.user,
-            stripe_id=charge.id,
-            amount=order.get_total_amount()
-        )
-        payment.save()
+        #Commenting it as off now - will need to investigate further
+        #try:
+        #    charge = stripe.Charge.create(
+        #      amount=round(float(order.get_total_amount() * 100)),
+        #      currency="usd",
+        #      source=token,
+        #      description="My First Test Charge (created for API docs)"
+        #    )
+        #except stripe.error.CardError:
+        #    messages.error(self.request, 'Payment could not be made')
+        #    return redirect('products:home-page')
+        #except Exception as e:
+        #    print(e)
+        #    messages.error(self.request, 'getting an error', e)
+        #    return redirect('products:home-page')
+
+        #payment = Payment(
+        #    user=self.request.user,
+        #    stripe_id=charge.id,
+        #    amount=order.get_total_amount()
+        #)
+        #payment.save()
         order.order_id = get_random_string(length=20)
-        order.payment = payment
         order.ordered = True
         order.save()
 
