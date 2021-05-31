@@ -3,7 +3,6 @@
     {% block extra_head %} {% endblock %}
     {% load static %}
     <link rel="shortcut icon" type="image/png" href="{%static "images/Dynatrace-favicon.ico"%}"/>
-    <link rel="shortcut icon" type="image/png" href="{%static "images/e-commerce.jpg"%}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.min.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.css' %}"/>
@@ -11,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"/>
 </head>
 <body>
-    <nav class="navbar sticky-top navbar-expand-md navbar-light bg-dark" style="background: url('e-commerce.jpg')"> 
+    <nav class="navbar sticky-top navbar-expand-md navbar-light bg-dark">
     <div class="container">
 
         <a class="navbar-nav mr-auto" href="{% url 'products:home-page' %}"></a>
@@ -25,6 +24,7 @@
             </ul>
             <ul class="navbar-nav navbar-right">
                 {% if user.is_authenticated %}
+		    <p style="color:white; margin:16px; padding-right:100px">Welcome {{request.user }}</p>
                     <li class="nav-item">
                         <a class="nav-link" style="color:white" href="{% url 'profile' %}">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>Profile</a>

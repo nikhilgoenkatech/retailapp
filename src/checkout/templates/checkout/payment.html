@@ -21,7 +21,8 @@
                 <!-- Used to display form errors. -->
                 <div id="card-errors" role="alert"></div>
             </div>
-            <button class="btn btn-primary btn-block">Pay {{ order.get_total_amount|floatformat:2 }} $</button>
+	    <p style="color:black; text-align: center">Proceed to pay the amount by clicking on the button below </p>
+            <button class="btn btn-primary btn-block">{{ order.get_total_amount|floatformat:2 }} </button>
         </form>
 
     </div>

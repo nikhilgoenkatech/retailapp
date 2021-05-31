@@ -1,3 +1,5 @@
+import os
+import oneagent
 from django.contrib import messages
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -49,6 +51,13 @@ class CartDetailView(LoginRequiredMixin, DetailView):
 
 class AddToCartAjax(View):
     def post(self, request, product_id, *args, **kwargs):
+        #Method to add custom request attribute. As DT does not support Python out-of-the-box, adding the below or else adding it to just JSON object should suffice.
+        init_result = oneagent.initialize()
+        if init_result:
+           sdk = oneagent.get_sdk()
+           if "DT_RELEASE_VERSION" in os.environ:
+             sdk.add_custom_request_attribute('release-version',os.getenv("DT_RELEASE_VERSION"))
+
         if not self.request.user.is_authenticated:
             return JsonResponse({
                 'error': 'In order to add item to cart please create an account'
@@ -63,11 +72,19 @@ class AddToCartAjax(View):
             else:
                 order_item = OrderItem.objects.create(user=self.request.user, item=product)
                 order.items.add(order_item)
-            return JsonResponse({
-                'msg': "Product has been successfully added to cart",
-                'quantity': order_item.quantity,
-                'total_items': order.get_total_quantity()
+            # Pass release-version details in the header if environment variable is set
+            if "DT_RELEASE_VERSION" in os.environ:
+              return JsonResponse({
+                  'msg': "Product has been successfully added to cart",
+                  'quantity': order_item.quantity,
+                  'total_items': order.get_total_quantity(),
             })
+            else:
+              return JsonResponse({
+                  'msg': "Product has been successfully added to cart",
+                  'quantity': order_item.quantity,
+                  'total_items': order.get_total_quantity()
+              })
 
 
 @login_required
