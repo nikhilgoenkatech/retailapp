@@ -1,0 +1,5 @@
+export STRIPE_SECRET_KEY="My-secret-key"
+export STRIPE_PUBLISHABLE_KEY="My-stripe-key"
+export EMAIL_HOST_USER="HOST_USER"
+export EMAIL_HOST_PASSWORD="Password"
+export AUTOWRAPT_BOOTSTRAP=autodynatrace
