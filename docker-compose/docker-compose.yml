@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: ./ecommerce-app
+      dockerfile: Dockerfile
+    command: gunicorn ecommerce.wsgi:application --bind 0.0.0.0:3005
+    #volumes:
+    #   - static_volume:/home/app/web/staticfiles
+    ports:
+      - 3005:3005
+    networks:
+      - nginx_network
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    #volumes:
+    #  - static_volume:/home/app/web/staticfiles
+    depends_on:
+      - web
+    networks:
+      - nginx_network
+networks:  # <-- and here
+   nginx_network:
+      driver: bridge
