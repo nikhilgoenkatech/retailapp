@@ -152,7 +152,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = '/'
 
 env = environ.Env()
-env.read_env(os.path.join(os.path.dirname(BASE_DIR), '.env'))
+#env.read_env(os.path.join(os.path.dirname(BASE_DIR), '.env'))
 STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
