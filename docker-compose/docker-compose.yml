@@ -5,9 +5,7 @@ services:
     build:
       context: ./ecommerce-app
       dockerfile: Dockerfile
-    command: gunicorn ecommerce.wsgi:application --bind 0.0.0.0:3005
-    #volumes:
-    #   - static_volume:/home/app/web/staticfiles
+    command: bash -c "python3.8 manage.py collectstatic --no-input &&gunicorn ecommerce.wsgi:application --bind 0.0.0.0:3005"
     ports:
       - 3005:3005
     networks:
@@ -17,12 +15,14 @@ services:
     build: ./nginx
     ports:
       - 80:80
-    #volumes:
-    #  - static_volume:/home/app/web/staticfiles
+    # volumes:
+    # - static:/retailapp/src/products/static/
     depends_on:
       - web
     networks:
       - nginx_network
-networks:  # <-- and here
+networks:
    nginx_network:
       driver: bridge
+#volumes:
+   #static:
