@@ -36,6 +36,7 @@ RUN git clone https://github.com/nikhilgoenkatech/retailapp.git
 RUN pip3 install -r retailapp/requirements.txt
 RUN pip3 install uwsgi
 RUN pip3 install autodynatrace
+RUN pip3 install whitenoise
 
 ENV STRIPE_SECRET_KEY="My-secret-key"
 ENV STRIPE_PUBLISHABLE_KEY="My-stripe-key"
