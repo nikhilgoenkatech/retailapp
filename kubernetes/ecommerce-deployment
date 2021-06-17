@@ -1,0 +1,14 @@
+apiVersion: v1nginx-ingress-microk8s-controller-srqrk
+kind: Service
+metadata:
+ name: ecommerce-svc
+ namespace: default
+spec: 
+ selector:
+   role: frontend
+ ports:  
+   - protocol: TCP
+     port: 3005 
+     targetPort: 3005 
+     nodePort: 31000
+ type: NodePort
