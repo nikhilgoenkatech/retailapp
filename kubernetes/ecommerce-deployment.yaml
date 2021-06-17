@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: ecommerce
+ labels:
+   role: frontend
+spec:
+ replicas: 1 
+ selector:
+   matchLabels:
+     role: frontend
+ template:
+   metadata:
+     labels:
+       role: frontend
+   spec:
+     containers:
+     - name: frontend
+       image: nikhilgoenka/ecommerce
+       imagePullPolicy: ifNotPresent 
+     - name: nikhilgoenka/reverse-proxy
+       image: nginx_prop
+       imagePullPolicy: ifNotPresent
