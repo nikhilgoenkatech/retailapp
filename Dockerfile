@@ -28,4 +28,6 @@ ENV AUTOWRAPT_BOOTSTRAP=autodynatrace
 
 WORKDIR retailapp/src
 EXPOSE 3005
+RUN python3.8 manage.py collectstatic --noinput
+
 CMD ["gunicorn", "--bind", "0.0.0.0:3005", "ecommerce.wsgi:application"]
