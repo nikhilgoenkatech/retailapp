@@ -45,5 +45,7 @@ ENV EMAIL_HOST_PASSWORD="Password"
 ENV AUTOWRAPT_BOOTSTRAP=autodynatrace
 
 WORKDIR retailapp/src
+RUN python3.8 manage.py collectstatic --noinput
+
 EXPOSE 3005
 CMD ["gunicorn", "--bind", "0.0.0.0:3005", "ecommerce.wsgi:application"]
