@@ -3,10 +3,6 @@ kind: Ingress
 metadata:
   name: ecommerce-ingress
 spec:
- rules:
-  - http:
-      paths:
-      - path: /
-        backend:
-         serviceName: ecommerce-svc
-         servicePort: 3005
+  backend:
+    serviceName: ecommerce-backend
+    servicePort: 3005
