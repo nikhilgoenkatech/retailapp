@@ -57,6 +57,10 @@ class AddToCartAjax(View):
            sdk = oneagent.get_sdk()
            if "DT_RELEASE_VERSION" in os.environ:
              sdk.add_custom_request_attribute('release-version',os.getenv("DT_RELEASE_VERSION"))
+           #for Kubernetes
+           if "RELEASE_VERSION" in os.environ:
+             sdk.add_custom_request_attribute('release-version',os.getenv("RELEASE_VERSION"))
+           
 
         if not self.request.user.is_authenticated:
             return JsonResponse({
