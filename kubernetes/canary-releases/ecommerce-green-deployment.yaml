@@ -42,7 +42,7 @@ spec:
        imagePullPolicy: Always
        env:
        - name: RELEASE_VERSION
-         value: "blue"
+         value: "green"
        ports:
        - containerPort: 3005
          protocol: TCP
