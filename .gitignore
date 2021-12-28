@@ -1,5 +1,13 @@
+# Python
 *.pyc
 __pycache__/
 .env
 venv/
 .idea/
+env/
+
+# macOS sytem files
+.DS_Store
+
+# SQlite3 Database Files
+*.sqlite3

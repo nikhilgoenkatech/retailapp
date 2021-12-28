@@ -49,8 +49,7 @@ INSTALLED_APPS = [
 
     'products',
     'carts',
-    'checkout',
-    'autodynatrace.wrappers.django'
+    'checkout'
 ]
 
 MIDDLEWARE = [
