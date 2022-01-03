@@ -8,11 +8,27 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import ListView, DetailView, View
 from django.views.generic.edit import FormView
 from django.http import JsonResponse
+from django.db import connection
+from opentelemetry import trace as OpenTelemetry
 
 from products.models import Product
 from .models import Order, OrderItem
 from .models import RefundForm
 
+
+class DatabaseLogger:
+
+    def __init__(self):
+        # TODO: Remove the following line and implement if needed
+        self.queries = []
+    
+    def __call__(self, execute, sql, params, many, context):
+        current_query = {'sql': sql, 'params': params, 'many': many}
+        tracer = OpenTelemetry.get_tracer(__name__)
+        with tracer.start_as_current_span("sqlite3 db call"):
+            current_span = OpenTelemetry.get_current_span()
+            current_span.set_attribute("sql_query", sql)
+            return execute(sql, params, many, context)
 
 class RefundView(LoginRequiredMixin, SuccessMessageMixin, FormView):
     template_name = 'carts/refund.html'
@@ -32,51 +48,57 @@ class RefundView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         form.instance.order = order
         return super().form_valid(form)
 
-
+# OTEL Instrumented
 class OrdersListView(LoginRequiredMixin, ListView):
     context_object_name = 'orders'
 
     def get_queryset(self):
-        return self.request.user.order_set.filter(ordered=True)
+        dbl = DatabaseLogger()
+        with connection.execute_wrapper(dbl):
+            return self.request.user.order_set.filter(ordered=True)
 
-
+# OTEL Instrumented
 class CartDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'order'
     template_name = 'carts/cart.html'
 
     def get_object(self, queryset=None):
-        return self.request.user.order_set.filter(ordered=False).first()
+        dbl = DatabaseLogger()
+        with connection.execute_wrapper(dbl):
+            return self.request.user.order_set.filter(ordered=False).first()
 
-
+# OTEL Instrumented
 class AddToCartAjax(View):
     def post(self, request, product_id, *args, **kwargs):
-        if not self.request.user.is_authenticated:
-            return JsonResponse({
-                'error': 'In order to add item to cart please create an account'
-            }, status=401)
-        if self.request.is_ajax:
-            product = get_object_or_404(Product, pk=product_id)
-            order, _ = Order.objects.get_or_create(user=self.request.user, ordered=False)
-            if order.items.filter(item__pk=product_id).exists():
-                order_item = order.items.get(item__pk=product_id)
-                order_item.quantity += 1
-                order_item.save()
-            else:
-                order_item = OrderItem.objects.create(user=self.request.user, item=product)
-                order.items.add(order_item)
-            # Pass release-version details in the header if environment variable is set
-            if "DT_RELEASE_VERSION" in os.environ:
-              return JsonResponse({
-                  'msg': "Product has been successfully added to cart",
-                  'quantity': order_item.quantity,
-                  'total_items': order.get_total_quantity(),
-            })
-            else:
-              return JsonResponse({
-                  'msg': "Product has been successfully added to cart",
-                  'quantity': order_item.quantity,
-                  'total_items': order.get_total_quantity()
-              })
+        tracer = OpenTelemetry.get_tracer(__name__)
+        with tracer.start_as_current_span("AJAX Add to Cart"):
+            if not self.request.user.is_authenticated:
+                return JsonResponse({
+                    'error': 'In order to add item to cart please create an account'
+                }, status=401)
+            if self.request.is_ajax:
+                product = get_object_or_404(Product, pk=product_id)
+                order, _ = Order.objects.get_or_create(user=self.request.user, ordered=False)
+                if order.items.filter(item__pk=product_id).exists():
+                    order_item = order.items.get(item__pk=product_id)
+                    order_item.quantity += 1
+                    order_item.save()
+                else:
+                    order_item = OrderItem.objects.create(user=self.request.user, item=product)
+                    order.items.add(order_item)
+                # Pass release-version details in the header if environment variable is set
+                if "DT_RELEASE_VERSION" in os.environ:
+                    return JsonResponse({
+                    'msg': "Product has been successfully added to cart",
+                    'quantity': order_item.quantity,
+                    'total_items': order.get_total_quantity(),
+                    })
+                else:
+                    return JsonResponse({
+                    'msg': "Product has been successfully added to cart",
+                    'quantity': order_item.quantity,
+                    'total_items': order.get_total_quantity()
+                    })
 
 
 @login_required
