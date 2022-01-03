@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# Stop on Errors
+# See https:vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eeuxo pipefail
+
+export STRIPE_SECRET_KEY="My-secret-key"
+export STRIPE_PUBLISHABLE_KEY="My-stripe-key"
+export EMAIL_HOST_USER="HOST_USER"
+export EMAIL_HOST_PASSWORD="Password"
+export DT_TENANT_URL="https://<ENVIRONMENT_ID>.live.dynatrace.com/api/v2/otlp/v1/traces"
+export DT_API_TOKEN="<DYNATRACE_API_TOKEN>"
+
+# Enable the following line to disable Django Auto-instrumentation with OpenTelemetry
+#export OTEL_PYTHON_DJANGO_INSTRUMENT=False
+
+python src/manage.py runserver --noreload
