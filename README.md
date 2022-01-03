@@ -14,26 +14,19 @@ The purpose of this project was to learn Django Framework.
 
 ## Setup
 
-- Create and activate virtual environment
-```buildoutcfg
-python -m venv venv
+- Run the `devinstall` startup script in the `/bin` folder. This script should create a Python virtual environment named `env`, activate it, then install all of the required project dependencies. You should be able to run all of the binaries in this folder from the root of the project.
 ```
-- Create a .env file in e-commerce-django-website directory with following variables.
-Credentials for email should be taken from your mailtrap account
-```buildoutcfg
-STRIPE_SECRET_KEY=
-STRIPE_PUBLISHABLE_KEY=
-EMAIL_HOST_USER=
-EMAIL_HOST_PASSWORD=
+./bin/devinstall
 ```
-- Add STRIPE_PUBLISHABLE_KEY into stripe_payment.js file
-- Install packages from requirements.txt
-```buildoutcfg
-pip install -r requirements.txt
+
+- After running the install script, your Python virtual environment should be activated. You'll notice an `(env)` in your terminal if the environment is successfully activated. If it isn't, activate it by running:
 ```
-- Run command
-```buildoutcfg
-python src\manage.py runserver
+source env/bin/activate
+```
+
+- Run the `devstartup` script in the `/bin` folder to start the retailapp in development mode.
+```
+./bin/devinstall
 ```
 
 ## Example of app
@@ -79,8 +72,8 @@ Orders page
 
 ## Technologies
 
-- Python 3.7
-- Django 2.2
+- Python 3.8
+- Django 2.2.10
 - HTML / JS
 - Bootstrap 4.3.1
 - Stripe API
