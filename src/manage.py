@@ -18,7 +18,7 @@ from opentelemetry.instrumentation.django import DjangoInstrumentor
 
 
 def main():
-    # Set ENV variables for settings module
+    # Set ENV variable for settings module
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecommerce.settings')
 
     # Dynatrace required code for OpenTelemetry Instrumentation - START
