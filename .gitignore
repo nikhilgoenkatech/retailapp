@@ -6,7 +6,7 @@ venv/
 .idea/
 env/
 
-# macOS sytem files
+# macOS system files
 .DS_Store
 
 # SQlite3 Database Files

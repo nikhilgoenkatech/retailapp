@@ -26,7 +26,7 @@ source env/bin/activate
 
 - Run the `devstartup` script in the `/bin` folder to start the retailapp in development mode.
 ```
-./bin/devinstall
+./bin/devstartup
 ```
 
 ## Example of app
