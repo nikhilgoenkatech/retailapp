@@ -24,6 +24,8 @@ The purpose of this project was to learn Django Framework.
 source env/bin/activate
 ```
 
+- Set the necessary environment variables
+
 - Run the `devstartup` script in the `/bin` folder to start the retailapp in development mode.
 ```
 ./bin/devstartup
@@ -79,3 +81,12 @@ Orders page
 - Stripe API
 - mailtrap.io
 - AJAX
+
+## Environment Variables
+
+- `STRIPE_SECRET_KEY`
+- `STRIPE_PUBLISHABLE_KEY`
+- `EMAIL_HOST_USER`
+- `EMAIL_HOST_PASSWORD`
+- `DT_TENANT_URL` Dynatrace tenant URL
+- `DT_API_TOKEN` Dynatrace API token
