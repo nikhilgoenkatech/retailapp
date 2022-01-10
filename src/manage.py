@@ -15,6 +15,7 @@ from opentelemetry.sdk.trace.export import (
     BatchSpanProcessor,
 )
 from opentelemetry.instrumentation.django import DjangoInstrumentor
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
 
 def main():
@@ -53,6 +54,9 @@ def main():
 
     # OpenTelemetry instrumentation call for Django
     DjangoInstrumentor().instrument()
+
+    # OpenTelemetry instrumentation call for Requests
+    RequestsInstrumentor().instrument()
     
     try:
         from django.core.management import execute_from_command_line

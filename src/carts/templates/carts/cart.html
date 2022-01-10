@@ -1,26 +1,30 @@
 {% extends "products/base.html" %} {% load static %} {% block content %}
 <div class="container my-4" style="color: white">
+	<script type="text/javascript" src="{% static 'products/main.js' %}"></script>
 	<script>
 		function convert() {
-		var url = "http://localhost:7000/convert";
+		var url = "http://localhost:8000/cart/convert/"
 
 		var xhr = new XMLHttpRequest();
 		xhr.responseType = 'json';
 		xhr.open("POST", url);
+		const csrftoken = getCookie('csrftoken');
 
 		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.setRequestHeader('X-CSRFToken', csrftoken);
 
 		xhr.onreadystatechange = function () {
 		    if (xhr.readyState === 4) {
 		        console.log(xhr.status);
-		        console.log(xhr.response.units);
-		        console.log(xhr.response.nanos.toString());
-		        console.log(`${xhr.response.units}.${xhr.response.nanos.toString().substring(0,2)}`)
-		        alert(`Total converted to Euros is €${xhr.response.units}.${xhr.response.nanos.toString().substring(0,2)}`)
+//		        console.log(xhr.response.units);
+//		        console.log(xhr.response.nanos.toString());
+//		        console.log(`${xhr.response.units}.${xhr.response.nanos.toString().substring(0,2)}`)
+//		        alert(`Total converted to Euros is €${xhr.response.units}.${xhr.response.nanos.toString().substring(0,2)}`)
 		}};
-		var units = {{ order.get_total_amount|floatformat:0 }}
-		var nanos = {{ order.get_total_amount|floatformat:2 }} % 1.0
-		var data = `{"from": {"currency_code": "USD", "units": ${units}, "nanos": ${nanos}}, "to": "EUR"}`;
+//		var units = {{ order.get_total_amount|floatformat:0 }}
+//		var nanos = {{ order.get_total_amount|floatformat:2 }} % 1.0
+//		var data = `{"from": {"currency_code": "USD", "units": ${units}, "nanos": ${nanos}}, "to": "EUR"}`;
+		var data = `{}`;
 
 		xhr.send(data);
 		}

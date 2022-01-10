@@ -1,4 +1,6 @@
 import os
+import requests
+import json
 from django.contrib import messages
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -99,6 +101,26 @@ class AddToCartAjax(View):
                     'quantity': order_item.quantity,
                     'total_items': order.get_total_quantity()
                     })
+
+class ConvertCurrency(View):
+    def post(self, request, *args, **kwargs):
+        tracer = OpenTelemetry.get_tracer(__name__)
+        with tracer.start_as_current_span("XHR Received"):
+            payload = {
+                'from': {
+                    'currency_code': 'USD',
+                    'units': 65,
+                    'nanos': 500000000
+                },
+                'to': 'EUR'            
+            }
+            print(payload)
+            r = requests.post('http://localhost:7000/convert', json=payload)
+            print(r.text)
+            return JsonResponse({
+                'msg': 'Message received'
+            })
+
 
 
 @login_required
