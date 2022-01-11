@@ -19,17 +19,14 @@ from .models import RefundForm
 
 
 class DatabaseLogger:
-
-    def __init__(self):
-        # TODO: Remove the following line and implement if needed
-        self.queries = []
-    
+    '''Class to help wrap db calls for OpenTelemetry'''
     def __call__(self, execute, sql, params, many, context):
-        current_query = {'sql': sql, 'params': params, 'many': many}
         tracer = OpenTelemetry.get_tracer(__name__)
-        with tracer.start_as_current_span("sqlite3 db call"):
+        with tracer.start_as_current_span("SQLite3 db call"):
             current_span = OpenTelemetry.get_current_span()
-            current_span.set_attribute("sql_query", sql)
+            current_span.set_attribute("db_query", sql)
+            current_span.set_attribute("db_connection", str(context['connection']))
+            current_span.set_attribute("db_cursor", str(context['cursor']))
             return execute(sql, params, many, context)
 
 class RefundView(LoginRequiredMixin, SuccessMessageMixin, FormView):
@@ -103,6 +100,7 @@ class AddToCartAjax(View):
                     })
 
 class ConvertCurrency(View):
+    '''Receives AJAX calls from frontend and makes requests to Currency Service '''
     def post(self, request, *args, **kwargs):
         tracer = OpenTelemetry.get_tracer(__name__)
         with tracer.start_as_current_span("XHR Received"):
