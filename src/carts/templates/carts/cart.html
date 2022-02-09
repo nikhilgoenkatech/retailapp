@@ -16,15 +16,14 @@
 		xhr.onreadystatechange = function () {
 		    if (xhr.readyState === 4) {
 		        console.log(xhr.status);
-//		        console.log(xhr.response.units);
-//		        console.log(xhr.response.nanos.toString());
-//		        console.log(`${xhr.response.units}.${xhr.response.nanos.toString().substring(0,2)}`)
-//		        alert(`Total converted to Euros is €${xhr.response.units}.${xhr.response.nanos.toString().substring(0,2)}`)
+		        console.log(xhr.response.units);
+		        console.log(xhr.response.nanos.toString());
+		        console.log(`${xhr.response.units}.${xhr.response.nanos.toString().substring(0,2)}`)
+		        alert(`Total converted to Euros is €${xhr.response.units}.${xhr.response.nanos.toString().substring(0,2)}`)
 		}};
-//		var units = {{ order.get_total_amount|floatformat:0 }}
-//		var nanos = {{ order.get_total_amount|floatformat:2 }} % 1.0
-//		var data = `{"from": {"currency_code": "USD", "units": ${units}, "nanos": ${nanos}}, "to": "EUR"}`;
-		var data = `{}`;
+		var units = {{ order.get_total_amount|floatformat:0 }}
+		var nanos = {{ order.get_total_amount|floatformat:2 }} % 1.0
+		var data = `{"from": {"currency_code": "USD", "units": ${units}, "nanos": ${nanos}}, "to": "EUR"}`;
 
 		xhr.send(data);
 		}

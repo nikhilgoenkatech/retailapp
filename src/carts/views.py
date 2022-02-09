@@ -17,7 +17,7 @@ from products.models import Product
 from .models import Order, OrderItem
 from .models import RefundForm
 
-
+# OTEL Manual Instrumentation
 class DatabaseLogger:
     '''Class to help wrap db calls for OpenTelemetry'''
     def __call__(self, execute, sql, params, many, context):
@@ -47,7 +47,7 @@ class RefundView(LoginRequiredMixin, SuccessMessageMixin, FormView):
         form.instance.order = order
         return super().form_valid(form)
 
-# OTEL Instrumented
+# OTEL Manual Instrumentation
 class OrdersListView(LoginRequiredMixin, ListView):
     context_object_name = 'orders'
 
@@ -56,7 +56,7 @@ class OrdersListView(LoginRequiredMixin, ListView):
         with connection.execute_wrapper(dbl):
             return self.request.user.order_set.filter(ordered=True)
 
-# OTEL Instrumented
+# OTEL Manual Instrumentation
 class CartDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'order'
     template_name = 'carts/cart.html'
@@ -66,7 +66,7 @@ class CartDetailView(LoginRequiredMixin, DetailView):
         with connection.execute_wrapper(dbl):
             return self.request.user.order_set.filter(ordered=False).first()
 
-# OTEL Instrumented
+# OTEL Manual Instrumentation
 class AddToCartAjax(View):
     def post(self, request, product_id, *args, **kwargs):
         tracer = OpenTelemetry.get_tracer(__name__)
@@ -99,24 +99,24 @@ class AddToCartAjax(View):
                     'total_items': order.get_total_quantity()
                     })
 
+# OTEL Manual Instrumentation
 class ConvertCurrency(View):
     '''Receives AJAX calls from frontend and makes requests to Currency Service '''
     def post(self, request, *args, **kwargs):
         tracer = OpenTelemetry.get_tracer(__name__)
         with tracer.start_as_current_span("XHR Received"):
-            payload = {
-                'from': {
-                    'currency_code': 'USD',
-                    'units': 65,
-                    'nanos': 500000000
-                },
-                'to': 'EUR'            
-            }
-            print(payload)
+            # Convert json byte string to payload dict
+            payload = json.loads(request.body)
+
+            # POST the payload to the Currency Service
             r = requests.post('http://localhost:7000/convert', json=payload)
-            print(r.text)
+
+            # Decode JSON from CurrencyService and return response to frontend
+            currencyResponse = r.json()
             return JsonResponse({
-                'msg': 'Message received'
+                'units': currencyResponse['units'],
+                'nanos': currencyResponse['nanos'],
+                'currency_code': currencyResponse['currency_code']
             })
 
 
