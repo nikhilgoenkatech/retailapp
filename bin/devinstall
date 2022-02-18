@@ -5,6 +5,9 @@
 set -Eeuxo pipefail
 set -x
 
+# Install Python3-venv
+sudo apt install python3-venv
+
 # Create a Python virtual environment
 python3 -m venv env
 

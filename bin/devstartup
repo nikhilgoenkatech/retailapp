@@ -25,4 +25,6 @@ export DT_API_TOKEN=${DT_API_TOKEN}
 # Enable the following line to disable Django Auto-instrumentation with OpenTelemetry
 #export OTEL_PYTHON_DJANGO_INSTRUMENT=False
 
+# The --noreload flag is needed to avoid Django from running main twice
+# See https://github.com/open-telemetry/opentelemetry-python/tree/main/docs/examples/django
 python src/manage.py runserver --noreload
