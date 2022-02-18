@@ -5,6 +5,12 @@
 set -Eeuxo pipefail
 set -x
 
+# Update package list
+sudo apt update
+
+# Upgrade packages
+sudo apt upgrade
+
 # Install Python3-venv
 sudo apt install python3-venv
 
