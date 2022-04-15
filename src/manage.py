@@ -38,7 +38,7 @@ def main():
             break
         except:
             pass
-
+    
     OpenTelemetry.set_tracer_provider(TracerProvider(resource=resource, sampler=trace.sampling.ALWAYS_ON))
 
     OpenTelemetry.get_tracer_provider().add_span_processor(
@@ -49,7 +49,6 @@ def main():
             },
         ))
     )
-    
     # Dynatrace required code for OpenTelemetry Instrumentation - END
 
     # OpenTelemetry instrumentation call for Django

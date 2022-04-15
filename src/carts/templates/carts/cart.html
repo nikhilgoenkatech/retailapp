@@ -3,7 +3,7 @@
 	<script type="text/javascript" src="{% static 'products/main.js' %}"></script>
 	<script>
 		function convert() {
-		var url = "http://localhost:8000/cart/convert/"
+/*		var url = "http://localhost:8000/cart/convert/"
 
 		var xhr = new XMLHttpRequest();
 		xhr.responseType = 'json';
@@ -26,6 +26,8 @@
 		var data = `{"from": {"currency_code": "USD", "units": ${units}, "nanos": ${nanos}}, "to": "EUR"}`;
 
 		xhr.send(data);
+*/
+		alert(`Total converted to Euros is €{{order.convert_currency|floatformat:2}}`)
 		}
 	</script>
 	<h2 class="text-center my-4">Your Cart</h2>

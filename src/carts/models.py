@@ -1,3 +1,5 @@
+import requests
+import json
 from django.db import models
 from django.conf import settings
 from django import forms
@@ -5,6 +7,7 @@ from django import forms
 from products.models import Product
 from checkout.models import ShippingAddress
 from checkout.models import Payment
+from opentelemetry import trace as OpenTelemetry
 
 
 class OrderItem(models.Model):
@@ -45,6 +48,31 @@ class Order(models.Model):
 
     def get_total_quantity(self):
         return sum(item.quantity for item in self.items.all())
+
+    def convert_currency(self):
+        tracer = OpenTelemetry.get_tracer(__name__)
+        with tracer.start_as_current_span("Making Request to Currency Service"):
+            headers = {
+                'Content-Type': 'application/json'
+            }
+            payload = {
+                "from": {
+                    "currency_code": "USD",
+                    "units": self.get_total_amount(),
+                    "nanos": self.get_total_amount() % 1.0
+                },
+                "to": "EUR"
+            }
+            url = "http://localhost:7000/convert"
+            r = requests.post(url, headers=headers, data=json.dumps(payload))
+
+
+            response = r.json()
+            units = response['units']
+            nanos = round(response['nanos'], 2)
+            totalString = f'{units}.{nanos}'
+            total = float(totalString)
+            return total
 
 
 class Refund(models.Model):
