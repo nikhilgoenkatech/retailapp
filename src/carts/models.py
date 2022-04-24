@@ -49,11 +49,18 @@ class Order(models.Model):
     def get_total_quantity(self):
         return sum(item.quantity for item in self.items.all())
 
+    # Otel Manuel Instrumentation
     def convert_currency(self):
         tracer = OpenTelemetry.get_tracer(__name__)
-        with tracer.start_as_current_span("Making Request to Currency Service"):
+        with tracer.start_as_current_span("Making Request to Currency Service") as span:
+            # Grabs traceid and spanid for context propagation
+            context = span.get_span_context()
+            trace_id = OpenTelemetry.format_trace_id(context.trace_id)
+            span_id = OpenTelemetry.format_span_id(context.span_id)
+            trace_parent = "00-" + trace_id + "-" + span_id + "-" + "01"
             headers = {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'traceparent': trace_parent
             }
             payload = {
                 "from": {
@@ -64,7 +71,11 @@ class Order(models.Model):
                 "to": "EUR"
             }
             url = "http://localhost:7000/convert"
-            r = requests.post(url, headers=headers, data=json.dumps(payload))
+            try:
+                r = requests.post(url, headers=headers, data=json.dumps(payload), timeout=1)
+            except:
+                print("Request to Currency Converter Failed")
+                return -1
 
 
             response = r.json()

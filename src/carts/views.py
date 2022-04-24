@@ -99,27 +99,6 @@ class AddToCartAjax(View):
                     'total_items': order.get_total_quantity()
                     })
 
-# OTEL Manual Instrumentation
-class ConvertCurrency(View):
-    '''Receives AJAX calls from frontend and makes requests to Currency Service '''
-    def post(self, request, *args, **kwargs):
-        tracer = OpenTelemetry.get_tracer(__name__)
-        with tracer.start_as_current_span("XHR Received"):
-            # Convert json byte string to payload dict
-            payload = json.loads(request.body)
-
-            # POST the payload to the Currency Service
-            r = requests.post('http://localhost:7000/convert', json=payload)
-
-            # Decode JSON from CurrencyService and return response to frontend
-            currencyResponse = r.json()
-            return JsonResponse({
-                'units': currencyResponse['units'],
-                'nanos': currencyResponse['nanos'],
-                'currency_code': currencyResponse['currency_code']
-            })
-
-
 
 @login_required
 def increase_product_in_cart(request, product_id):
