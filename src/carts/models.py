@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 from django.db import models
 from django.conf import settings
 from django import forms
@@ -70,6 +71,7 @@ class Order(models.Model):
                 },
                 "to": "EUR"
             }
+            url = os.environ.get("CURRENCYSERVICE_URL")
             url = "http://localhost:7000/convert"
             try:
                 r = requests.post(url, headers=headers, data=json.dumps(payload), timeout=1)

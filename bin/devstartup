@@ -21,6 +21,7 @@ export EMAIL_HOST_USER=${EMAIL_HOST_USER}
 export EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
 export DT_TENANT_URL=${DT_TENANT_URL}
 export DT_API_TOKEN=${DT_API_TOKEN}
+export CURRENCYSERVICE_URL=${CURRENCYSERVICE_URL}
 
 # Enable the following line to disable Django Auto-instrumentation with OpenTelemetry
 #export OTEL_PYTHON_DJANGO_INSTRUMENT=False
