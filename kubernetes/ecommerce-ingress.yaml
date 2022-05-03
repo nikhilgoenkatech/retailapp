@@ -1,8 +1,0 @@
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: ecommerce-ingress
-spec:
-  backend:
-    serviceName: ecommerce-backend
-    servicePort: 3005
