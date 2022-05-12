@@ -21,7 +21,6 @@ def main():
 
     # START - Dynatrace required code for OpenTelemetry Instrumentation
     # This is for development purposes only. This does not get called when using Gunicorn, see gunicorn.config.py for production instrumentation.
-    '''
     merged = dict()
     for name in ["dt_metadata_e617c525669e072eebe3d0f08212e8f2.json", "/var/lib/dynatrace/enrichment/dt_metadata.json"]:
         try:
@@ -48,7 +47,6 @@ def main():
             "Authorization": ("Api-Token " + os.environ.get("DT_API_TOKEN"))
         },
     )))
-    '''
     # END - Dynatrace required code for OpenTelemetry Instrumentation
     
     try:

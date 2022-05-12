@@ -8,3 +8,6 @@ env/
 
 # macOS system files
 .DS_Store
+
+# SQlite3 Database Files
+*.sqlite3
