@@ -1,7 +1,6 @@
 # Python
 *.pyc
 __pycache__/
-.env
 venv/
 .idea/
 env/
@@ -11,3 +10,6 @@ env/
 
 # SQlite3 Database Files
 *.sqlite3
+
+# Docker Environment File
+.env

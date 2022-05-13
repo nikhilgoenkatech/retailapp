@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  retailapp:
+    container_name: retailapp
+    build: .
+    ports: 
+      - "3005:3005"
+    volumes:
+      - sqlite3:/retailapp/src/db/
+    env_file:
+      - .env
+    networks:
+      - nginx_network
+    restart: always
+  nginx:
+    container_name: nginx
+    build: ./docker-compose/nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - retailapp
+    networks:
+      - nginx_network
+    restart: always
+
+volumes:
+  sqlite3:
+networks:
+  nginx_network:
+    driver: bridge
