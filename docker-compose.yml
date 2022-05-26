@@ -7,7 +7,7 @@ services:
     ports: 
       - "3005:3005"
     volumes:
-      - sqlite3:/retailapp/src/db/
+      - sqlite3:/retailapp/db/
     env_file:
       - .env
     networks:

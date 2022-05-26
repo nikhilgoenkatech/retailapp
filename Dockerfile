@@ -26,25 +26,23 @@ RUN apt-get update \
 
 RUN apt-get install python3.8
 
-RUN pip3 install pillow
-# install dependencies
+# Install Dependencies
 RUN apt-get install git
-RUN pip install --upgrade pip
+RUN pip3 install --upgrade pip
 
 WORKDIR /retailapp
-COPY . .
+COPY requirements.txt .
+COPY src/ .
 
 RUN pip3 install -r requirements.txt
-RUN pip3 install whitenoise
 
-ARG DT_RELEASE_VERSION
+# These Env variables need to be set in order for app to run
 ENV STRIPE_SECRET_KEY="My-secret-key"
 ENV STRIPE_PUBLISHABLE_KEY="My-stripe-key"
 ENV EMAIL_HOST_USER="HOST_USER"
 ENV EMAIL_HOST_PASSWORD="Password"
-ENV DT_RELEASE_VERSION ${DT_RELEASE_VERSION}
 
-WORKDIR /retailapp/src
+
 EXPOSE 3005
 
 RUN python3.8 manage.py collectstatic --noinput
