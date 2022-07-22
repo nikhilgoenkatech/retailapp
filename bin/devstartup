@@ -6,26 +6,46 @@ set -Eeuxo pipefail
 
 # Command line options
 usage() {
-    echo "Usage: $0 (vanilla|instrument|debug)"
+    echo "Usage: $0 (development|gunicorn)"
 }
 
-#!/bin/bash
-#
-# Stop on Errors
-# See https:vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
-set -Eeuxo pipefail
+# If the number of args passed from command line doesn't equal 1, then exit and print usage
+if [ $# -ne 1 ]; then
+    usage
+    exit 1
+fi
 
-export STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
-export STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
-export EMAIL_HOST_USER=${EMAIL_HOST_USER}
-export EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
-export DT_TENANT_URL=${DT_TENANT_URL}
-export DT_API_TOKEN=${DT_API_TOKEN}
-export CURRENCYSERVICE_URL=${CURRENCYSERVICE_URL}
+case $1 in 
+    "development")
+        echo "Starting retailapp in development mode"
+        export STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+        export STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+        export EMAIL_HOST_USER=${EMAIL_HOST_USER}
+        export EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+        export DT_TENANT_URL=${DT_TENANT_URL}
+        export DT_API_TOKEN=${DT_API_TOKEN}
+        export CURRENCYSERVICE_URL=${CURRENCYSERVICE_URL}
+        # The --noreload flag is needed to avoid Django from running main twice
+        # See https://github.com/open-telemetry/opentelemetry-python/tree/main/docs/examples/django
+        python src/manage.py runserver --noreload
+        ;;
+    "gunicorn")
+        echo "Starting retailapp with gunicorn"
+        export STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+        export STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+        export EMAIL_HOST_USER=${EMAIL_HOST_USER}
+        export EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+        export DT_TENANT_URL=${DT_TENANT_URL}
+        export DT_API_TOKEN=${DT_API_TOKEN}
+        export CURRENCYSERVICE_URL=${CURRENCYSERVICE_URL}
+        cd src
+        gunicorn --bind 0.0.0.0:3005 ecommerce.wsgi:application -c gunicorn.config.py
+esac
+
+
 
 # Enable the following line to disable Django Auto-instrumentation with OpenTelemetry
 #export OTEL_PYTHON_DJANGO_INSTRUMENT=False
 
-# The --noreload flag is needed to avoid Django from running main twice
-# See https://github.com/open-telemetry/opentelemetry-python/tree/main/docs/examples/django
-python src/manage.py runserver --noreload
+
+
