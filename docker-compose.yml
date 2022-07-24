@@ -4,7 +4,7 @@ services:
   retailapp:
     container_name: retailapp
     build: .
-    ports: 
+    ports:
       - "3005:3005"
     volumes:
       - sqlite3:/retailapp/db/
@@ -28,4 +28,5 @@ volumes:
   sqlite3:
 networks:
   nginx_network:
+    name: nginx_network
     driver: bridge
