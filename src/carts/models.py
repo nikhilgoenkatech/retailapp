@@ -55,26 +55,23 @@ class Order(models.Model):
         tracer = OpenTelemetry.get_tracer(__name__)
         with tracer.start_as_current_span("Making Request to Currency Service") as span:
             # Grabs traceid and spanid for context propagation
-            
             context = span.get_span_context()
             trace_id = OpenTelemetry.format_trace_id(context.trace_id)
             span_id = OpenTelemetry.format_span_id(context.span_id)
-            trace_parent = "00-" + trace_id + "-" + span_id + "-" + "01"
+            trace_parent = f"00-{trace_id}-{span_id}-01"
+            propagation = os.environ.get("CONTEXT_PROPAGATION", "FALSE")
 
-    #############################################################################################
-    #############################################################################################            
             headers = {
-                'Content-Type': 'application/json',
-                'traceparent': trace_parent
-            }
-    #############################################################################################
-    ####################### Use top section for context propagation #############################
-    #############################################################################################      
-    #        headers = {
-    #            'Content-Type': 'application/json'
-    #        }        
-    #############################################################################################
-    #############################################################################################
+                    'Content-Type': 'application/json'
+                }            
+            
+            # Add traceparent header if propagation is enabled 
+            if propagation == "TRUE":
+                headers = {
+                    'Content-Type': 'application/json',
+                    'traceparent': trace_parent
+                }        
+    
             payload = {
                 "from": {
                     "currency_code": "USD",
