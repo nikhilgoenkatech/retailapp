@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - image: tylerfaulkdt/step-otel-retailapp-rp:0.1
+          name: step-otel-retailapp-rp
+          # Resource Limits are experimental. Not Final.
+          resources:
+            requests:
+              memory: "1000M"
+              cpu: "1.0"
+            limits:
+              memory: "2000M"
+              cpu: "2.0"

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: retailapp
+  name: retailapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: retailapp
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: retailapp
+    spec:
+      containers:
+        - image: tylerfaulkdt/step-otel-retailapp:0.1
+          name: step-otel-retailapp
+          env:
+            - name: DT_TENANT_URL
+              value: ""
+            - name: DT_API_TOKEN
+              value: ""
+            - name: CURRENCYSERVICE_URL
+              value: "http://currencyservice:7000/convert"
+          ports:
+            - containerPort: 3005
+          # Resource Limits are experimental. Not Final.
+          resources:
+            requests:
+              memory: "1000M"
+              cpu: "1.0"
+            limits:
+              memory: "2000M"
+              cpu: "2.0"
+status: {}
