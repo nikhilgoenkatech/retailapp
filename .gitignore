@@ -10,6 +10,3 @@ env/
 
 # SQlite3 Database Files
 *.sqlite3
-
-# Docker Environment File
-.env
