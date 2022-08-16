@@ -1,0 +1,10 @@
+#!/bin/bash
+
+export STRIPE_SECRET_KEY="My-secret-key"
+export STRIPE_PUBLISHABLE_KEY="My-stripe-key"
+export EMAIL_HOST_USER="HOST_USER"
+export EMAIL_HOST_PASSWORD="Password"
+export DT_TENANT_URL=""
+export DT_API_TOKEN=""
+export CURRENCYSERVICE_URL="http://localhost:7000/convert"
+export CONTEXT_PROPAGATION="FALSE"

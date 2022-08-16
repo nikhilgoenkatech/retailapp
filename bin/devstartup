@@ -44,8 +44,3 @@ esac
 
 
 
-# Enable the following line to disable Django Auto-instrumentation with OpenTelemetry
-#export OTEL_PYTHON_DJANGO_INSTRUMENT=False
-
-
-

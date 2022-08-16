@@ -3,16 +3,15 @@
 # Stop on errors, print commands
 # See https:vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 set -Eeuxo pipefail
-set -x
 
 # Update package list
-sudo apt update
+sudo apt update -y
 
 # Upgrade packages
-sudo apt upgrade
+sudo apt upgrade -y
 
 # Install Python3-venv
-sudo apt install python3-venv
+sudo apt install python3-venv -y
 
 # Create a Python virtual environment
 python3 -m venv env
