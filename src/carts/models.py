@@ -93,6 +93,8 @@ class Order(models.Model):
             nanos = round(response['nanos'], 2)
             totalString = f'{units}.{nanos}'
             total = float(totalString)
+            current_span = OpenTelemetry.get_current_span()
+            current_span.set_attribute("conversion_total", totalString)
             return total
 
 
