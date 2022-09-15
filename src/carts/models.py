@@ -53,7 +53,7 @@ class Order(models.Model):
     # Otel Manuel Instrumentation
     def convert_currency(self):
         tracer = OpenTelemetry.get_tracer(__name__)
-        with tracer.start_as_current_span("Request to Currency Service") as span:
+        with tracer.start_as_current_span("Request to Currency Service", kind=OpenTelemetry.SpanKind.SERVER) as span:
             # Grabs traceid and spanid for context propagation
             context = span.get_span_context()
             trace_id = OpenTelemetry.format_trace_id(context.trace_id)
@@ -83,7 +83,12 @@ class Order(models.Model):
             url = os.environ.get("CURRENCYSERVICE_URL")
             try:
                 r = requests.post(url, headers=headers, data=json.dumps(payload), timeout=1)
-            except:
+            except requests.RequestException as e:
+                failed_span = OpenTelemetry.get_current_span()
+                event_attributes = {
+                    "error_message": str(e)
+                }
+                failed_span.add_event("Request to Currency Converter Failed", attributes=event_attributes)
                 print("Request to Currency Converter Failed")
                 return -1
 
