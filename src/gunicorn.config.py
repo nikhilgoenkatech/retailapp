@@ -12,7 +12,7 @@ from opentelemetry.sdk.trace.export import (
 def post_fork(server, worker):
     server.log.info("Worker spawned (pid: %s)", worker.pid)
 
-    # START - Dynatrace required code for OpenTelemetry Instrumentation
+    # START - OpenTelemetry Initialization
     merged = dict()
     for name in ["dt_metadata_e617c525669e072eebe3d0f08212e8f2.json", "/var/lib/dynatrace/enrichment/dt_metadata.json"]:
         try:
@@ -39,4 +39,4 @@ def post_fork(server, worker):
             "Authorization": ("Api-Token " + os.environ.get("DT_API_TOKEN"))
         },
     )))
-    # END - Dynatrace required code for OpenTelemetry Instrumentation
+    # END - OpenTelemetry Intialization
